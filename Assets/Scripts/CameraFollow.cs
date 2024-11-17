@@ -35,6 +35,6 @@ public class CameraFollow : MonoBehaviour
     {
         // Only update X and Z of target position, keep Y fixed by offset
         targetPosition = playerPosition;
-        Debug.Log(targetPosition);
+        //Debug.Log(targetPosition);
     }
 }
