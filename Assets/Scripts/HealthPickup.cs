@@ -1,16 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class HealthPickup : MonoBehaviour
 {
     [SerializeField] private int healAmount = 20;
 
+    public static event Action<int> OnHealthCollected; // Event to notify healing
+
     public void Collect()
     {
-        PlayerHealth playerHealth = FindObjectOfType<PlayerHealth>();
-        if (playerHealth != null)
-        {
-            playerHealth.Heal(healAmount);
-        }
-        Destroy(gameObject);
+        Debug.Log("HealthPickup collected.");
+        OnHealthCollected?.Invoke(healAmount);
+        Destroy(gameObject); // Remove the pickup after collection
     }
 }

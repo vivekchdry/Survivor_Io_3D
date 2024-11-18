@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class PlayerManager : MonoBehaviour
 {
     public static Action<Vector3> OnPlayerMoved; // Event for player position updates
-    [SerializeField] private Image healthBarFill; // Health bar UI reference
+    [SerializeField] private HealthBar healthBar; // Health bar UI reference
 
     private PlayerMovement playerMovement;
     private PlayerHealth playerHealth;
@@ -17,6 +17,15 @@ public class PlayerManager : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         playerHealth = GetComponent<PlayerHealth>();
     }
+    
+    private void Start()
+    {
+        // Initialize the health bar with full health
+        if (playerHealth != null)
+        {
+            HandleHealthChange(playerHealth.CurrentHealth, playerHealth.MaxHealth);
+        }
+    }
 
     private void OnEnable()
     {
@@ -25,8 +34,9 @@ public class PlayerManager : MonoBehaviour
         InputManager.OnJumpInput += HandleJumpInput;
 
         // Subscribe to PlayerHealth events
-        playerHealth.OnHealthChanged += UpdateHealthBar;
+        PlayerHealth.OnHealthChanged += HandleHealthChange;
         PlayerHealth.OnPlayerDeath += HandlePlayerDeath;
+        HealthPickup.OnHealthCollected += HandleHealthPickup;
     }
 
     private void OnDisable()
@@ -36,8 +46,9 @@ public class PlayerManager : MonoBehaviour
         InputManager.OnJumpInput -= HandleJumpInput;
 
         // Unsubscribe from PlayerHealth events
-        playerHealth.OnHealthChanged -= UpdateHealthBar;
+        PlayerHealth.OnHealthChanged -= HandleHealthChange;
         PlayerHealth.OnPlayerDeath -= HandlePlayerDeath;
+        HealthPickup.OnHealthCollected -= HandleHealthPickup;
     }
 
     private void Update()
@@ -71,10 +82,20 @@ public class PlayerManager : MonoBehaviour
         jumpRequested = true;
     }
 
-    private void UpdateHealthBar(int currentHealth, int maxHealth)
+    private void HandleHealthChange(int currentHealth, int maxHealth)
     {
-        // Update the health bar fill amount
-        healthBarFill.fillAmount = (float)currentHealth / maxHealth;
+        if (healthBar != null)
+        {
+            // Calculate the health percentage and pass it to the HealthBar
+            float healthPercentage = (float)currentHealth / maxHealth;
+            healthBar.UpdateFill(healthPercentage);
+        }
+    }
+
+    private void HandleHealthPickup(int healAmount)
+    {
+        Debug.Log($"Player healed by {healAmount}.");
+        playerHealth.Heal(healAmount);
     }
 
     private void HandlePlayerDeath()
@@ -82,11 +103,12 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("Player has died. Notifying GameManager.");
         GameManager.Instance.OnPlayerDied();
     }
-    
+
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (hit.collider.CompareTag("Coin"))
         {
+            Debug.Log($"Player hit {hit.collider.gameObject.name}");
             Coin coin = hit.collider.GetComponent<Coin>();
             if (coin != null)
             {
@@ -95,6 +117,7 @@ public class PlayerManager : MonoBehaviour
         }
         else if (hit.collider.CompareTag("HealthPickup"))
         {
+            Debug.Log($"Player hit {hit.collider.gameObject.name}");
             HealthPickup healthPickup = hit.collider.GetComponent<HealthPickup>();
             if (healthPickup != null)
             {

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8985930168845829412}
   - component: {fileID: 6946716745694113128}
   - component: {fileID: 7298219776947493734}
+  - component: {fileID: 4856439476289951616}
   m_Layer: 0
   m_Name: player_body
   m_TagString: Player
@@ -120,7 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37d9a8ff9edd46abb9d0197dc65f302a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMovement: {fileID: 5877973668720605047}
+  healthBar: {fileID: 3337456724481841990}
 --- !u!143 &6946716745694113128
 CharacterController:
   m_ObjectHideFlags: 0
@@ -161,6 +162,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   currentHealth: 0
+--- !u!114 &4856439476289951616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4838824845419489036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f608b7ab8d9647f385c46d2bd4a72f50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 8850609628320605561, guid: dd19c37da05f4124c883a91ad9124d98,
+    type: 3}
+  playerBody: {fileID: 1158688458779401570}
+  defensiveRadius: 7
+  fireCooldown: 2
+  spawnOffset: 1
+  shootingEnabled: 1
 --- !u!1 &5345962502204381692
 GameObject:
   m_ObjectHideFlags: 0
@@ -172,8 +192,9 @@ GameObject:
   - component: {fileID: 7552858177790722372}
   - component: {fileID: 4108891623737632076}
   - component: {fileID: 1506046466130606705}
+  - component: {fileID: 3337456724481841990}
   m_Layer: 0
-  m_Name: Image
+  m_Name: healthbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -226,16 +247,59 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 057031cbbf3dd744293c6f6ec4980eb2, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3337456724481841990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5345962502204381692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6d826f4504f4940832800ae0fa287aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fillImage: {fileID: 1506046466130606705}
+  colorGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 0, b: 0, a: 1}
+    key1: {r: 0, g: 1, b: 0.08995247, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 2
+    m_ColorSpace: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
 --- !u!1 &7061687267097999333
 GameObject:
   m_ObjectHideFlags: 0
